@@ -28,7 +28,6 @@ const input = cli.input;
 const flags = cli.flags;
 const { clear, debug } = flags;
 
-const userName = 'gbrachetta';
 const currentFileUrl = import.meta.url;
 
 const templatesPath = path.resolve(
@@ -36,7 +35,7 @@ const templatesPath = path.resolve(
   '../templates',
 );
 
-const goAhead = async (repoName, repoDescription, repoType) => {
+const goAhead = async (repoName, repoDescription, repoType, username) => {
   const tasks = new Listr([
     {
       title: 'Initialize Repository',
@@ -72,7 +71,7 @@ const goAhead = async (repoName, repoDescription, repoType) => {
     },
   ]);
   await tasks.run();
-  goodbye(repoName, userName);
+  goodbye(repoName, username);
 };
 
 (async () => {
@@ -83,6 +82,12 @@ const goAhead = async (repoName, repoDescription, repoType) => {
 
   inquirer
     .prompt([
+      {
+        type: 'input',
+        name: 'username',
+        message: 'What is your GitHub username?',
+        default: 'my-username',
+      },
       {
         type: 'input',
         name: 'repoName',
@@ -102,7 +107,7 @@ const goAhead = async (repoName, repoDescription, repoType) => {
         choices: ['public', 'private'],
       },
     ])
-    .then(({ repoName, repoDescription, repoType }) => {
-      goAhead(repoName, repoDescription, repoType);
+    .then(({ repoName, repoDescription, repoType, username }) => {
+      goAhead(repoName, repoDescription, repoType, username);
     });
 })();
