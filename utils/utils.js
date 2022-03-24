@@ -1,5 +1,19 @@
 /* eslint-disable no-undef */
 import { execa } from 'execa';
+import shell from 'shelljs';
+
+const { which } = shell;
+
+export async function checkGh() {
+  if (!which('gh')) {
+    shell.echo(
+      'Sorry, this script requires gh installed (GitHub CLI tool) to work',
+    );
+    shell.echo();
+    shell.echo('See: https://cli.github.com/');
+    shell.exit(1);
+  }
+}
 
 export async function initializeRepo() {
   await execa('git', ['init']);

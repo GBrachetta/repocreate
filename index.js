@@ -17,6 +17,7 @@ import shell from 'shelljs';
 import {
   addRemote,
   addToGit,
+  checkGh,
   createFirstCommit,
   createRepo,
   goodbye,
@@ -80,6 +81,10 @@ const goAhead = async (repoName, repoDescription, repoType, username) => {
 
   debug && log(flags);
 
+  // Check if gh is installed
+  checkGh();
+
+  // Prompt
   inquirer
     .prompt([
       {
