@@ -2,6 +2,7 @@
 import { execa } from 'execa';
 import shell from 'shelljs';
 import fs from 'fs';
+import chalk from 'chalk';
 
 const { which } = shell;
 
@@ -144,6 +145,8 @@ ${repoDescription}
 export async function goodbye(repoName, userName) {
   console.log();
   console.log(
-    `🎉 Done! - Your repository is available in: https://github.com/${userName}/${repoName}`,
+    chalk.cyan.bold(
+      `🎉 Done! - Your repository is available in: https://github.com/${userName}/${repoName}`,
+    ),
   );
 }

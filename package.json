@@ -1,7 +1,7 @@
 {
   "name": "@gbrachetta/repocreate",
   "description": "A command line tool to create repositories and push them to Github",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "license": "MIT",
   "bin": {
     "repocreate": "index.js"
@@ -23,7 +23,7 @@
     "format": "prettier --write \"./**/*.{js,json}\""
   },
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.1",
     "cli-alerts": "^1.2.2",
     "cli-handle-error": "^4.4.0",
     "cli-handle-unhandled": "^1.1.1",

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
 
 /**
  * repocreate
@@ -14,6 +15,7 @@ import inquirer from 'inquirer';
 import path from 'path';
 import Listr from 'listr';
 import shell from 'shelljs';
+import chalk from 'chalk';
 import {
   addReadme,
   addRemote,
@@ -36,6 +38,45 @@ const templatesPath = path.resolve(
   new URL(currentFileUrl).pathname,
   '../templates',
 );
+
+const orange = chalk.hex('#FF8800');
+
+async function areYouSure(repoName, repoDescription, repoType, username) {
+  console.log();
+  console.log(chalk.bgBlueBright.black(' Your selection: '));
+  console.log();
+  console.log('Repository Name:', orange.bold(repoName));
+  console.log('Repository Description:', orange.bold(repoDescription));
+  console.log('Repository Type:', orange.bold(repoType));
+  console.log('Your GitHub Username:', orange.bold(username));
+  console.log(
+    'Your Repository will be created in the current directory:',
+    orange.bold(process.cwd()),
+  );
+  console.log();
+
+  inquirer
+    .prompt([
+      {
+        type: 'confirm',
+        name: 'confirm',
+        message: 'Are you sure?',
+        default: false,
+      },
+    ])
+    .then(async answers => {
+      if (answers.confirm) {
+        console.log();
+        console.log(chalk.bgBlueBright.black(' Creating repository... '));
+        console.log();
+        await goAhead(repoName, repoDescription, repoType, username);
+      } else {
+        console.log();
+        console.log('Cancelled');
+        process.exit(0);
+      }
+    });
+}
 
 const goAhead = async (repoName, repoDescription, repoType, username) => {
   const tasks = new Listr([
@@ -118,6 +159,6 @@ const goAhead = async (repoName, repoDescription, repoType, username) => {
       },
     ])
     .then(({ repoName, repoDescription, repoType, username }) => {
-      goAhead(repoName, repoDescription, repoType, username);
+      areYouSure(repoName, repoDescription, repoType, username);
     });
 })();
