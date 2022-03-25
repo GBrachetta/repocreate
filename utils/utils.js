@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { execa } from 'execa';
 import shell from 'shelljs';
+import fs from 'fs';
 
 const { which } = shell;
 
@@ -122,6 +123,22 @@ export async function pushRepo() {
       console.log(`stdout: ${stdout}`);
     },
   );
+}
+
+export async function addReadme(repoName, repoDescription, username) {
+  const readme = `
+# ${repoName}
+
+## By ${username}
+
+${repoDescription}
+`;
+  fs.writeFile(`${process.cwd()}/Readme.md`, readme, err => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  });
 }
 
 export async function goodbye(repoName, userName) {

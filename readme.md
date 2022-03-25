@@ -11,7 +11,7 @@ This command line tool automatizes the following:
 
 ## Requirements
 
-You need to have the [GitHub CLI](https://cli.github.com/) installed.
+You need to have `git` and the [GitHub CLI](https://cli.github.com/) installed.
 
 ## Installation
 
@@ -21,7 +21,7 @@ npm i -g @gbrachetta/repocreate
 
 ## Usage
 
-Run the following in your terminal:
+Run the following in your terminal, **from the root of your directory for which you want to create a repository**:
 
 ```bash
 repocreate

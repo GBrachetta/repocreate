@@ -15,6 +15,7 @@ import path from 'path';
 import Listr from 'listr';
 import shell from 'shelljs';
 import {
+  addReadme,
   addRemote,
   addToGit,
   checkGh,
@@ -49,6 +50,10 @@ const goAhead = async (repoName, repoDescription, repoType, username) => {
     {
       title: 'Rename .gitignore',
       task: () => shell.mv('gitignore', '.gitignore'),
+    },
+    {
+      title: 'Add Readme',
+      task: () => addReadme(repoName, repoDescription, username),
     },
     {
       title: 'Add files to stage',
