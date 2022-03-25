@@ -69,4 +69,12 @@ library/vendors/composer
 assets/img/.DS_Store
 
 # VSCode related files #
-# .vscode
+.vscode
+
+# Next.js
+.next
+
+build/
+.env
+venv/
+.venv/

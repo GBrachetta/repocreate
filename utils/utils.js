@@ -87,7 +87,7 @@ export async function createRepo(repoName, repoDescription, repoType) {
   );
 }
 
-export async function addRemote(repoName) {
+export async function addRemote(repoName, userName) {
   await execa(
     'git',
     ['remote', 'add', 'origin', `git@github.com:GBrachetta/${repoName}.git`],

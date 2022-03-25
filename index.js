@@ -39,19 +39,24 @@ const templatesPath = path.resolve(
   '../templates',
 );
 
-const orange = chalk.hex('#FF8800');
-
 async function areYouSure(repoName, repoDescription, repoType, username) {
+  const colors = {
+    choices: chalk.hex('#8fde8e').bold,
+    danger: chalk.hex('#ff4400').inverse.bold,
+    friendly: chalk.hex('#6ea9c2').inverse.bold,
+    warning: chalk.hex('#FF8800').inverse.bold,
+  };
+
   console.log();
-  console.log(chalk.bgBlueBright.black(' Your selection: '));
+  console.log(colors.friendly(' Your selection: '));
   console.log();
-  console.log('Repository Name:', orange.bold(repoName));
-  console.log('Repository Description:', orange.bold(repoDescription));
-  console.log('Repository Type:', orange.bold(repoType));
-  console.log('Your GitHub Username:', orange.bold(username));
+  console.log('‣ Repository Name:', colors.choices(repoName));
+  console.log('‣ Repository Description:', colors.choices(repoDescription));
+  console.log('‣ Repository Type:', colors.choices(repoType));
+  console.log('‣ Your GitHub Username:', colors.choices(username));
   console.log(
-    'Your Repository will be created in the current directory:',
-    orange.bold(process.cwd()),
+    '‣ Your Repository will be created in the current directory:',
+    colors.choices(process.cwd()),
   );
   console.log();
 
@@ -60,7 +65,7 @@ async function areYouSure(repoName, repoDescription, repoType, username) {
       {
         type: 'confirm',
         name: 'confirm',
-        message: 'Are you sure?',
+        message: colors.warning(' Are you sure? '),
         default: false,
       },
     ])
@@ -72,7 +77,7 @@ async function areYouSure(repoName, repoDescription, repoType, username) {
         await goAhead(repoName, repoDescription, repoType, username);
       } else {
         console.log();
-        console.log('Cancelled');
+        console.log(colors.danger(' Cancelled '));
         process.exit(0);
       }
     });
