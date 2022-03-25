@@ -39,7 +39,13 @@ const templatesPath = path.resolve(
   '../templates',
 );
 
-async function areYouSure(repoName, repoDescription, repoType, username) {
+async function areYouSure(
+  repoName,
+  repoDescription,
+  repoType,
+  username,
+  homepage,
+) {
   const colors = {
     choices: chalk.hex('#8fde8e').bold,
     danger: chalk.hex('#ff4400').inverse.bold,
@@ -51,6 +57,7 @@ async function areYouSure(repoName, repoDescription, repoType, username) {
   console.log(colors.friendly(' Your selection: '));
   console.log();
   console.log('‣ Repository Name:', colors.choices(repoName));
+  console.log('‣ Repository Website:', colors.choices(homepage));
   console.log('‣ Repository Description:', colors.choices(repoDescription));
   console.log('‣ Repository Type:', colors.choices(repoType));
   console.log('‣ Your GitHub Username:', colors.choices(username));
@@ -74,7 +81,7 @@ async function areYouSure(repoName, repoDescription, repoType, username) {
         console.log();
         console.log(chalk.bgBlueBright.black(' Creating repository... '));
         console.log();
-        await goAhead(repoName, repoDescription, repoType, username);
+        await goAhead(repoName, repoDescription, repoType, username, homepage);
       } else {
         console.log();
         console.log(colors.danger(' Cancelled '));
@@ -83,7 +90,13 @@ async function areYouSure(repoName, repoDescription, repoType, username) {
     });
 }
 
-const goAhead = async (repoName, repoDescription, repoType, username) => {
+const goAhead = async (
+  repoName,
+  repoDescription,
+  repoType,
+  username,
+  homepage,
+) => {
   const tasks = new Listr([
     {
       title: 'Initialize Repository',
@@ -111,11 +124,11 @@ const goAhead = async (repoName, repoDescription, repoType, username) => {
     },
     {
       title: 'Create Repo',
-      task: () => createRepo(repoName, repoDescription, repoType),
+      task: () => createRepo(repoName, repoDescription, repoType, homepage),
     },
     {
       title: 'Add Github Remote',
-      task: () => addRemote(repoName),
+      task: () => addRemote(repoName, username),
     },
     {
       title: 'Push to Github',
@@ -141,8 +154,17 @@ const goAhead = async (repoName, repoDescription, repoType, username) => {
       {
         type: 'input',
         name: 'username',
-        message: 'What is your GitHub username?',
+        message: `What is your GitHub username? ${chalk.yellowBright(
+          '⚠️',
+          ' Will not work if you enter a wrong username!',
+        )}`,
         default: 'my-username',
+      },
+      {
+        type: 'input',
+        name: 'homepage',
+        message: 'What is your website?',
+        default: 'https://my-website.com',
       },
       {
         type: 'input',
@@ -163,7 +185,7 @@ const goAhead = async (repoName, repoDescription, repoType, username) => {
         choices: ['public', 'private'],
       },
     ])
-    .then(({ repoName, repoDescription, repoType, username }) => {
-      areYouSure(repoName, repoDescription, repoType, username);
+    .then(({ repoName, repoDescription, repoType, username, homepage }) => {
+      areYouSure(repoName, repoDescription, repoType, username, homepage);
     });
 })();

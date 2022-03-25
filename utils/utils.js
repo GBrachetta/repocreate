@@ -3,6 +3,7 @@ import { execa } from 'execa';
 import shell from 'shelljs';
 import fs from 'fs';
 import chalk from 'chalk';
+import stripAnsi from 'strip-ansi';
 
 const { which } = shell;
 
@@ -59,7 +60,12 @@ export async function createFirstCommit() {
   );
 }
 
-export async function createRepo(repoName, repoDescription, repoType) {
+export async function createRepo(
+  repoName,
+  repoDescription,
+  repoType,
+  homepage,
+) {
   await execa(
     'gh',
     [
@@ -70,7 +76,7 @@ export async function createRepo(repoName, repoDescription, repoType) {
       `${repoDescription}`,
       `--${repoType}`,
       '--homepage',
-      'https://www.gbrachetta.com/',
+      `${homepage}`,
     ],
     { cwd: process.cwd() },
     (error, stdout, stderr) => {
@@ -87,10 +93,15 @@ export async function createRepo(repoName, repoDescription, repoType) {
   );
 }
 
-export async function addRemote(repoName, userName) {
+export async function addRemote(repoName, username) {
   await execa(
     'git',
-    ['remote', 'add', 'origin', `git@github.com:GBrachetta/${repoName}.git`],
+    [
+      'remote',
+      'add',
+      'origin',
+      `git@github.com:${stripAnsi(username)}/${repoName}.git`,
+    ],
     { cwd: process.cwd() },
     (error, stdout, stderr) => {
       if (error) {
